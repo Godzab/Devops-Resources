@@ -24,7 +24,7 @@ CODE COMMIT - SECURING BRANCHES
 - You never push to master or develop
 - You can limit pushes to certain branches.
 - You can do this in iAM policy.
-```
+``` yaml
 {
   "Version": "2012-10-17",
   "Statement": [
@@ -78,7 +78,7 @@ CODE BUILD
 - We have a source provider for the build.
 
 buildspec.yaml
-```
+``` yaml
 version: 0.2
 
 phases: 
@@ -100,7 +100,7 @@ phases:
             - echo "we are in the post build phase"
 ```
 
-```
+``` yaml
 version: 0.2
 
 
@@ -202,7 +202,7 @@ cache:
 
 
 Example
-```
+``` yaml
 version: 0.2
 
 
@@ -281,7 +281,7 @@ CODEBUILD ENVIRONMENT VARIABLES AND PARAMETER STORE
 
 CODE BUILD IS USED TO BUILD ITEMS. THE OUTPUT IS AN ARTIFACT WHICH WILL BE UPLOADED SOMEWHERE AND CONSUMED BY OTHER SERVICES.
 
-```
+``` yaml
 artifacts:
   files:
     - target/messageUtil-1.0.jar          //FILE REQUIRED BY BUILD JOB AS RESULT
@@ -322,7 +322,7 @@ DEPLOYMENT GROUPS - CONFIGURATIONS
 
 
 APPSPEC.YAML DEEP-DIVE
-```
+``` yaml
 version: 0.0
 os: linux
 files:
@@ -430,7 +430,7 @@ CODE PIPELINE
 A pipeline is triggered per branch so you need to create 1 pipeline per desired branch.
 You can deploy in a different region if chosen as such.
 
-```
+``` json
 // Cloudwatch rule that triggers code pipeline
 
 {
@@ -550,7 +550,7 @@ OUTPUTS
 - Enables cross stack collaboration
 - You cannot delete a stack with outputs still being referenced elsewhere.
 
-```
+``` yaml
 Outputs:
   StackSSHSecurityGroup:
     Description: This is an output
@@ -560,7 +560,7 @@ Outputs:
 ```
 - For imports we use the Fn::ImportValue function.
 - You cannot delete the underlaying stack until all the references are deleted too.
-```
+``` yaml
 MyInstance:
   Type: AWS::EC2::Instance
   Properties:
@@ -577,7 +577,7 @@ MyInstance:
 CONDITIONS
 - Used to control the creation of resources or outputs based on a condition.
 - Environmental selections (dev/prod)
-```
+``` yaml
 Conditions:
   CreateProductionResources: !Equals[!Ref EnvType, prod]
 ```
@@ -624,7 +624,7 @@ CFN-INIT
 - AWS::CloudFormation::Init must be in the metadata of a resource.
 - With the cfn-init script it helps make complex EC2 configurations readable.
 - Logs go to /var/log/cfn-init.log
-```
+``` yaml
 MyInstance:
   Type: AWS::EC2::Instance
   Properties:
@@ -675,7 +675,7 @@ CFN-SIGNAL AND WAIT CONDITIONS
 	- This blocks a template until it receives a signal from cnf-signal
 	- We attach a CreationPolicy (Also works on EC2 and ASG)
 	- Dictates how many signals and how long were are willing to wait. 
-```
+``` yaml
 UserData: 
   Fn::Base64:
     !Sub |
@@ -748,7 +748,7 @@ CLOUDFORMATION ADVANCED
 
 PARAMETERS FROM SSM
 - Injection of parameters into cloudformation
-```
+``` yaml
 Parameters:
   InstanceType:
     Type: 'AWS::SSM::Parameter::Value<String>’           #VERY IMPORTANT
@@ -765,7 +765,7 @@ Parameters:
 CLOUDFORMATION PUBLIC PARAMETERS FROM SSM
 - Amazon has public parameters that we can reference in our stacks.
 - Using the below picks the latest AMIs in the respective categories.
-```
+``` yaml
 Parameters:
   LatestLinuxAmiId:
     Type: 'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
@@ -786,7 +786,7 @@ CLOUDFROMATION DEPENDS-ON
 - As with docker-compose, this is a way to create a sequence in which resources will be created so that dependancies are met.
 - Creates a relation between resources.
 - Same as on docker-compose services.
-```
+``` yaml
 Resources:
   Ec2Instance:
     Type: AWS::EC2::Instance
@@ -821,7 +821,7 @@ CLOUDFORMATION CUSTOM RESOURCES (LAMBDA)
 	- Fetch AMI id (Old school)
 - These can be hooked to create, update and delete.
 - The resource can do whatever you want and are really powerful.
-```
+``` yaml
 AWSTemplateFormatVersion: '2010-09-09'
 
 
@@ -858,7 +858,7 @@ CLOUDFORMATION STACK POLICIES
 - Restricts actions on certain resources 
 
 Demo Stack Policy Document
-```
+``` json
 {
     "Statement": [
         {
@@ -924,7 +924,7 @@ EBEXTENSIONS FOR CONFIGS
 - These are extensions run to further help configurations
 - Saved configurations have precedence over ebextensions
 - You can also add any cloudfomation resources in the extensions file.
-```
+``` yaml
 Resources:
   DynamoDBTable:
     Type: AWS::DynamoDB::Table
